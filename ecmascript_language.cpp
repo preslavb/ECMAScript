@@ -1,6 +1,7 @@
 #include "ecmascript_language.h"
-#include "core/class_db.h"
-#include "core/os/file_access.h"
+#include "core/object/class_db.h"
+#include "core/io/file_access.h"
+
 ECMAScriptLanguage *ECMAScriptLanguage::singleton = NULL;
 
 void ECMAScriptLanguage::init() {
@@ -23,6 +24,25 @@ Error ECMAScriptLanguage::execute_file(const String &p_path) {
 		err = main_binder->eval_string(code, ECMAScriptBinder::EVAL_TYPE_GLOBAL, p_path, eval_ret);
 	}
 	return err;
+}
+
+bool ECMAScriptLanguage::is_control_flow_keyword(String p_keyword) const {
+	return p_keyword == "break" ||
+		   p_keyword == "case" ||
+		   p_keyword == "catch" ||
+		   p_keyword == "continue" ||
+		   p_keyword == "default" ||
+		   p_keyword == "do" ||
+		   p_keyword == "else" ||
+		   p_keyword == "finally" ||
+		   p_keyword == "for" ||
+		   p_keyword == "foreach" ||
+		   p_keyword == "if" ||
+		   p_keyword == "return" ||
+		   p_keyword == "switch" ||
+		   p_keyword == "throw" ||
+		   p_keyword == "try" ||
+		   p_keyword == "while";
 }
 
 void ECMAScriptLanguage::get_reserved_words(List<String> *p_words) const {
@@ -185,7 +205,7 @@ Ref<Script> ECMAScriptLanguage::get_template(const String &p_class_name, const S
 	script_template = script_template.replace("%BASE%", p_base_class_name).replace("%CLASS%", p_class_name);
 
 	Ref<ECMAScript> script;
-	script.instance();
+	script.instantiate();
 	script->set_source_code(script_template);
 	script->set_name(p_class_name);
 	script->set_script_path(p_class_name);
@@ -199,7 +219,7 @@ void ECMAScriptLanguage::make_template(const String &p_class_name, const String 
 }
 
 bool ECMAScriptLanguage::validate(const String &p_script, int &r_line_error, int &r_col_error, String &r_test_error, const String &p_path, List<String> *r_functions, List<ScriptLanguage::Warning> *r_warnings, Set<int> *r_safe_lines) const {
-	ECMAscriptScriptError script_error;
+	ECMAScriptScriptError script_error;
 	bool ret = main_binder->validate(p_script, p_path, &script_error);
 	if (!ret) {
 		r_test_error = main_binder->error_to_string(script_error);
@@ -243,6 +263,37 @@ void ECMAScriptLanguage::get_recognized_extensions(List<String> *p_extensions) c
 	p_extensions->push_back(EXT_JSCLASS_BYTECODE);
 }
 
+void *ECMAScriptLanguage::get_instance_binding(Object *p_object) {
+	ECMAScriptBinder *binder = get_thread_binder(Thread::get_caller_id());
+	ERR_FAIL_NULL_V_MSG(binder, nullptr, vformat("Couldn't find ECMAScript binder for thread %n", Thread::get_caller_id()));
+
+	return binder->get_instance_binding(p_object);
+}
+
+void *ECMAScriptLanguage::get_existing_instance_binding(Object *p_object) {
+	ECMAScriptBinder *binder = get_thread_binder(Thread::get_caller_id());
+	ERR_FAIL_NULL_V_MSG(binder, nullptr, vformat("Couldn't find ECMAScript binder for thread %n", Thread::get_caller_id()));
+
+	if (p_object->has_instance_binding(get_singleton())) {
+		ECMAScriptGCHandler *bind = (ECMAScriptGCHandler *)binder->get_instance_binding(p_object);
+
+		return bind;
+	}
+
+	return nullptr;
+}
+
+void ECMAScriptLanguage::set_instance_binding(Object *p_object, void *p_binding) {
+	ECMAScriptBinder *binder = get_thread_binder(Thread::get_caller_id());
+	ERR_FAIL_NULL_MSG(binder, vformat("Couldn't find ECMAScript binder for thread %n", Thread::get_caller_id()));
+
+	binder->set_instance_binding(p_object, p_binding);
+}
+
+bool ECMAScriptLanguage::has_instance_binding(Object *p_object) {
+	return p_object->has_instance_binding(get_singleton());
+}
+
 void *ECMAScriptLanguage::alloc_instance_binding_data(Object *p_object) {
 	if (ECMAScriptBinder *binder = get_thread_binder(Thread::get_caller_id())) {
 		return binder->alloc_object_binding_data(p_object);
@@ -258,13 +309,13 @@ void ECMAScriptLanguage::free_instance_binding_data(void *p_data) {
 
 void ECMAScriptLanguage::refcount_incremented_instance_binding(Object *p_object) {
 	if (ECMAScriptBinder *binder = get_thread_binder(Thread::get_caller_id())) {
-		binder->godot_refcount_incremented(static_cast<Reference *>(p_object));
+		binder->godot_refcount_incremented(static_cast<RefCounted *>(p_object));
 	}
 }
 
 bool ECMAScriptLanguage::refcount_decremented_instance_binding(Object *p_object) {
 	if (ECMAScriptBinder *binder = get_thread_binder(Thread::get_caller_id())) {
-		return binder->godot_refcount_decremented(static_cast<Reference *>(p_object));
+		return binder->godot_refcount_decremented(static_cast<RefCounted *>(p_object));
 	}
 	return true;
 }

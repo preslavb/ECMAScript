@@ -5,19 +5,19 @@ declare module globalThis {
 	 * This is a non-zero value, but you may not make any other assumptions about its value.
 	 * You can pass this value to `godot.cancelAnimationFrame()` to cancel the refresh callback request.
 	 */
-	type FrameRequetID = number;
+	type FrameRequestID = number;
 
 	/**
 	 * Request a refresh callback request, the `callback` will be called every frame
 	 * @param callback The function to call when it's time to update your animation for the next repaint. The callback function is passed one single argument, a number similar to the one returned by `godot.OS.get_system_time_msecs()`, indicating the point in time when requestAnimationFrame() starts to execute callback functions.
 	 */
-	function requestAnimationFrame(callback: (time_stamp: number) => void): FrameRequetID;
+	function requestAnimationFrame(callback: (time_stamp: number) => void): FrameRequestID;
 
 	/**
 	 * Cancel an frame request previously scheduled through a call to `godot.requestAnimationFrame()`.
 	 * @param request_id The ID value returned by the call to `godot.requestAnimationFrame()` that requested the callback.
 	 */
-	function cancelAnimationFrame(request_id: FrameRequetID): void;
+	function cancelAnimationFrame(request_id: FrameRequestID): void;
 	
 	/**
 	 * The Console API provides functionality to allow developers to perform debugging tasks, such as logging messages or the values of variables at set points in your code, or timing how long an operation takes to complete.
@@ -126,7 +126,19 @@ declare module globalThis {
 }
 
 declare module godot {
-	
+
+	class VariantType {
+	}
+
+	export class Object {
+	}
+
+	class Resource {
+	}
+
+	export class PropertyHint {
+	}
+
 	type GodotClass = new() => godot.Object;
 
 	interface PropertyInfo {
@@ -766,10 +778,10 @@ declare module godot {
 		/** Translates the transform by the specified offset. */
 		translated(ofs: Vector3) : Transform;
 
-		/** Transforms the given `Vector3`, `Plane`, `AABB`, or `PoolVector3Array` by this transform. */
+		/** Transforms the given `Vector3`, `Plane`, `AABB`, or `PackedVector3Array` by this transform. */
 		xform<T extends Vector3|Plane|AABB >(v: T) : T;
 
-		/** Inverse-transforms the given `Vector3`, `Plane`, `AABB`, or `PoolVector3Array` by this transform. */
+		/** Inverse-transforms the given `Vector3`, `Plane`, `AABB`, or `PackedVector3Array` by this transform. */
 		xform_inv<T extends Vector3|Plane|AABB >(v: T) : T;
 	}
 
@@ -849,10 +861,10 @@ declare module godot {
 		/** Translates the transform by the given offset. */
 		translated(offset: Vector2) : Transform2D;
 
-		/** Transforms the given `Vector2`, `Rect2`, or `PoolVector2Array` by this transform. */
+		/** Transforms the given `Vector2`, `Rect2`, or `PackedVector2Array` by this transform. */
 		xform<T extends Vector2 | Rect2 >(v: T) : T;
 
-		/** Inverse-transforms the given `Vector2`, `Rect2`, or `PoolVector2Array` by this transform. */
+		/** Inverse-transforms the given `Vector2`, `Rect2`, or `PackedVector2Array` by this transform. */
 		xform_inv<T extends Vector2 | Rect2 >(v: T) : T;
 
 	}
@@ -1882,14 +1894,14 @@ declare module godot {
 	}
 	
 	
-	/** A pooled `Array` of bytes.
+	/** A packed `Array` of bytes.
 	 An `Array` specifically designed to hold bytes. Optimized for memory usage, does not fragment the memory.
 
 	 **Note:** This type is passed by value and not by reference. */
-	class PoolByteArray {
+	class PackedByteArray {
 		
 		constructor(source?: number[]);
-		constructor(from: PoolByteArray);
+		constructor(from: PackedByteArray);
 		constructor(from: ArrayBuffer);
 		constructor(from: DataView);
 		[Symbol.iterator](): IterableIterator<number>;
@@ -1897,14 +1909,14 @@ declare module godot {
 		/** Appends an element at the end of the array (alias of `push_back`). */
 		append(byte: number) : void;
 
-		/** Appends a `PoolByteArray` at the end of this array. */
-		append_array(array: PoolByteArray) : void;
+		/** Appends a `PackedByteArray` at the end of this array. */
+		append_array(array: PackedByteArray) : void;
 
-		/** Returns a new `PoolByteArray` with the data compressed. Set the compression mode using one of `File.CompressionMode`'s constants. */
-		compress(compression_mode?: number) : PoolByteArray;
+		/** Returns a new `PackedByteArray` with the data compressed. Set the compression mode using one of `File.CompressionMode`'s constants. */
+		compress(compression_mode?: number) : PackedByteArray;
 
-		/** Returns a new `PoolByteArray` with the data decompressed. Set `buffer_size` to the size of the uncompressed data. Set the compression mode using one of `File.CompressionMode`'s constants. */
-		decompress(buffer_size: number, compression_mode?: number) : PoolByteArray;
+		/** Returns a new `PackedByteArray` with the data decompressed. Set `buffer_size` to the size of the uncompressed data. Set the compression mode using one of `File.CompressionMode`'s constants. */
+		decompress(buffer_size: number, compression_mode?: number) : PackedByteArray;
 
 		/** Returns `true` if the array is empty. */
 		empty() : boolean;
@@ -1942,22 +1954,22 @@ declare module godot {
 		/** Returns the size of the array. */
 		size() : number;
 
-		/** Returns the slice of the `PoolByteArray` between indices (inclusive) as a new `PoolByteArray`. Any negative index is considered to be from the end of the array. */
-		subarray(p_from: number, to: number) : PoolByteArray;
+		/** Returns the slice of the `PackedByteArray` between indices (inclusive) as a new `PackedByteArray`. Any negative index is considered to be from the end of the array. */
+		subarray(p_from: number, to: number) : PackedByteArray;
 		
 		/** Returns the content of the array as an `ArrayBuffer` */
 		get_buffer() : ArrayBuffer;
 	}
 
-	/** A pooled `Array` of `Color`.
+	/** A packed `Array` of `Color`.
 	 An `Array` specifically designed to hold `Color`. Optimized for memory usage, does not fragment the memory.
 
 	 **Note:** This type is passed by value and not by reference. */
-	class PoolColorArray {
+	class PackedColorArray {
 
 
 		constructor(source?: Color[]);
-		constructor(from: PoolColorArray);
+		constructor(from: PackedColorArray);
 		constructor(from: ArrayBuffer);
 		constructor(from: DataView);
 		[Symbol.iterator](): IterableIterator<Color>;
@@ -1965,8 +1977,8 @@ declare module godot {
 		/** Appends an element at the end of the array (alias of `push_back`). */
 		append(color: Color) : void;
 
-		/** Appends a `PoolColorArray` at the end of this array. */
-		append_array(array: PoolColorArray) : void;
+		/** Appends a `PackedColorArray` at the end of this array. */
+		append_array(array: PackedColorArray) : void;
 
 		/** Returns `true` if the array is empty. */
 		empty() : boolean;
@@ -1999,17 +2011,17 @@ declare module godot {
 		get_buffer() : ArrayBuffer;
 	}
 
-	/** A pooled `Array` of integers (`int`).
+	/** A packed `Array` of integers (`int`).
 	 An `Array` specifically designed to hold integer values (`int`). Optimized for memory usage, does not fragment the memory.
 
 	 **Note:** This type is passed by value and not by reference.
 
 	 **Note:** This type is limited to signed 32-bit integers, which means it can only take values in the interval ``-2^31, 2^31 - 1``, i.e. ``-2147483648, 2147483647``. Exceeding those bounds will wrap around. In comparison, `int` uses signed 64-bit integers which can hold much larger values. */
-	class PoolIntArray {
+	class PackedInt32Array {
 
 
 		constructor(source?: number[]);
-		constructor(from: PoolIntArray);
+		constructor(from: PackedInt32Array);
 		constructor(from: ArrayBuffer);
 		constructor(from: DataView);
 		[Symbol.iterator](): IterableIterator<number>;
@@ -2017,8 +2029,8 @@ declare module godot {
 		/** Appends an element at the end of the array (alias of `push_back`). */
 		append(integer: number) : void;
 
-		/** Appends a `PoolIntArray` at the end of this array. */
-		append_array(array: PoolIntArray) : void;
+		/** Appends a `PackedInt32Array` at the end of this array. */
+		append_array(array: PackedInt32Array) : void;
 
 		/** Returns `true` if the array is empty. */
 		empty() : boolean;
@@ -2051,14 +2063,61 @@ declare module godot {
 		get_buffer() : ArrayBuffer;
 	}
 
-	/** A pooled `Array` of reals (`float`).
+	//**Note:** This type is limited to signed 32-bit integers, which means it can only take values in the interval ``-2^31, 2^31 - 1``, i.e. ``-2147483648, 2147483647``. Exceeding those bounds will wrap around. In comparison, `int` uses signed 64-bit integers which can hold much larger values. */
+	class PackedInt64Array {
+
+
+		constructor(source?: number[]);
+		constructor(from: PackedInt64Array);
+		constructor(from: ArrayBuffer);
+		constructor(from: DataView);
+		[Symbol.iterator](): IterableIterator<number>;
+
+		/** Appends an element at the end of the array (alias of `push_back`). */
+		append(integer: number) : void;
+
+		/** Appends a `PackedInt64Array` at the end of this array. */
+		append_array(array: PackedInt64Array) : void;
+
+		/** Returns `true` if the array is empty. */
+		empty() : boolean;
+
+		/** Inserts a new int at a given position in the array. The position must be valid, or at the end of the array (`idx == size()`). */
+		insert(idx: number, integer: number) : number;
+
+		/** Reverses the order of the elements in the array. */
+		invert() : void;
+
+		/** Appends a value to the array. */
+		push_back(integer: number) : void;
+
+		/** Removes an element from the array by index. */
+		remove(idx: number) : void;
+
+		/** Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. */
+		resize(idx: number) : void;
+
+		/** Changes the int at the given index. */
+		set(idx: number, integer: number) : void;
+
+		/** Get the `int` at the given index */
+		get(idx: number): number;
+
+		/** Returns the array size. */
+		size() : number;
+
+		/** Returns the content of the array as an `ArrayBuffer` */
+		get_buffer() : ArrayBuffer;
+	}
+
+	/** A packed `Array` of reals (`float`).
 	 An `Array` specifically designed to hold floating-point values (`float`). Optimized for memory usage, does not fragment the memory.
 
 	 **Note:** This type is passed by value and not by reference. */
-	class PoolRealArray {
+	class PackedFloat32Array {
 
 		constructor(source?: number[]);
-		constructor(from: PoolRealArray);
+		constructor(from: PackedFloat32Array);
 		constructor(from: ArrayBuffer);
 		constructor(from: DataView);
 		[Symbol.iterator](): IterableIterator<number>;
@@ -2066,8 +2125,8 @@ declare module godot {
 		/** Appends an element at the end of the array (alias of `push_back`). */
 		append(value: number) : void;
 
-		/** Appends a `PoolRealArray` at the end of this array. */
-		append_array(array: PoolRealArray) : void;
+		/** Appends a `PackedFloat32Array` at the end of this array. */
+		append_array(array: PackedFloat32Array) : void;
 
 		/** Returns `true` if the array is empty. */
 		empty() : boolean;
@@ -2100,22 +2159,71 @@ declare module godot {
 		get_buffer() : ArrayBuffer;
 	}
 
-	/** A pooled `Array` of `String`.
+	/** A packed `Array` of reals (`float`).
+	 An `Array` specifically designed to hold floating-point values (`float`). Optimized for memory usage, does not fragment the memory.
+
+	 **Note:** This type is passed by value and not by reference. */
+	class PackedFloat64Array {
+
+		constructor(source?: number[]);
+		constructor(from: PackedFloat64Array);
+		constructor(from: ArrayBuffer);
+		constructor(from: DataView);
+		[Symbol.iterator](): IterableIterator<number>;
+
+		/** Appends an element at the end of the array (alias of `push_back`). */
+		append(value: number) : void;
+
+		/** Appends a `PackedFloat64Array` at the end of this array. */
+		append_array(array: PackedFloat64Array) : void;
+
+		/** Returns `true` if the array is empty. */
+		empty() : boolean;
+
+		/** Inserts a new element at a given position in the array. The position must be valid, or at the end of the array (`idx == size()`). */
+		insert(idx: number, value: number) : number;
+
+		/** Reverses the order of the elements in the array. */
+		invert() : void;
+
+		/** Appends an element at the end of the array. */
+		push_back(value: number) : void;
+
+		/** Removes an element from the array by index. */
+		remove(idx: number) : void;
+
+		/** Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. */
+		resize(idx: number) : void;
+
+		/** Changes the float at the given index. */
+		set(idx: number, value: number) : void;
+
+		/** Get the `number` at the given index */
+		get(idx: number): number;
+
+		/** Returns the size of the array. */
+		size() : number;
+
+		/** Returns the content of the array as an `ArrayBuffer` */
+		get_buffer() : ArrayBuffer;
+	}
+
+	/** A packed `Array` of `String`.
 	 An `Array` specifically designed to hold `String`s. Optimized for memory usage, does not fragment the memory.
 
 	 **Note:** This type is passed by value and not by reference. */
-	class PoolStringArray {
+	class PackedStringArray {
 
 
 		constructor(source?: string[]);
-		constructor(from: PoolStringArray);
+		constructor(from: PackedStringArray);
 		[Symbol.iterator](): IterableIterator<string>;
 
 		/** Appends an element at the end of the array (alias of `push_back`). */
 		append(p_string: string) : void;
 
-		/** Appends a `PoolStringArray` at the end of this array. */
-		append_array(array: PoolStringArray) : void;
+		/** Appends a `PackedStringArray` at the end of this array. */
+		append_array(array: PackedStringArray) : void;
 
 		/** Returns `true` if the array is empty. */
 		empty() : boolean;
@@ -2148,14 +2256,14 @@ declare module godot {
 		size() : number;
 	}
 
-	/** A pooled `Array` of `Vector2`.
+	/** A packed `Array` of `Vector2`.
 	 An `Array` specifically designed to hold `Vector2`. Optimized for memory usage, does not fragment the memory.
 
 	 **Note:** This type is passed by value and not by reference. */
-	class PoolVector2Array {
+	class PackedVector2Array {
 
 		constructor(source?: Vector2[]);
-		constructor(from: PoolVector2Array);
+		constructor(from: PackedVector2Array);
 		constructor(from: ArrayBuffer);
 		constructor(from: DataView);
 		[Symbol.iterator](): IterableIterator<Vector2>;
@@ -2163,8 +2271,8 @@ declare module godot {
 		/** Appends an element at the end of the array (alias of `push_back`). */
 		append(vector2: Vector2) : void;
 
-		/** Appends a `PoolVector2Array` at the end of this array. */
-		append_array(array: PoolVector2Array) : void;
+		/** Appends a `PackedVector2Array` at the end of this array. */
+		append_array(array: PackedVector2Array) : void;
 
 		/** Returns `true` if the array is empty. */
 		empty() : boolean;
@@ -2197,14 +2305,14 @@ declare module godot {
 		get_buffer() : ArrayBuffer;
 	}
 
-	/** A pooled `Array` of `Vector3`.
+	/** A packed `Array` of `Vector3`.
 	 An `Array` specifically designed to hold `Vector3`. Optimized for memory usage, does not fragment the memory.
 
 	 **Note:** This type is passed by value and not by reference. */
-	class PoolVector3Array {
+	class PackedVector3Array {
 
 		constructor(source?: Vector3[]);
-		constructor(from: PoolVector3Array);
+		constructor(from: PackedVector3Array);
 		constructor(from: ArrayBuffer);
 		constructor(from: DataView);
 		[Symbol.iterator](): IterableIterator<Vector3>;
@@ -2212,8 +2320,8 @@ declare module godot {
 		/** Appends an element at the end of the array (alias of `push_back`). */
 		append(vector3: Vector3) : void;
 
-		/** Appends a `PoolVector3Array` at the end of this array. */
-		append_array(array: PoolVector3Array) : void;
+		/** Appends a `PackedVector3Array` at the end of this array. */
+		append_array(array: PackedVector3Array) : void;
 
 		/** Returns `true` if the array is empty. */
 		empty() : boolean;

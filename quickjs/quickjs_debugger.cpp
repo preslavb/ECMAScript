@@ -3,14 +3,14 @@
 #define QJS_DEBUGGER_DEBUG_LOG 0
 
 QuickJSDebugger::ConnectionConfig QuickJSDebugger::parse_address(const String &address) {
-	int idx = address.find_last(":");
+	int idx = address.rfind(":");
 	String address_str = address.substr(0, idx);
 	if (address_str == "localhost") {
 		address_str = "127.0.0.1";
 	}
 	ConnectionConfig connect;
 	connect.port = address.substr(idx + 1).to_int();
-	connect.address = IP_Address(address_str);
+	connect.address = IPAddress(address_str);
 	return connect;
 }
 
@@ -99,7 +99,7 @@ Error QuickJSDebugger::listen(JSContext *ctx, const String &address) {
 	if (server.is_valid() && server->is_listening()) {
 		server->stop();
 	}
-	server.instance();
+	server.instantiate();
 	ConnectionConfig c = parse_address(address);
 	Error err = server->listen(c.port, c.address);
 	return err;

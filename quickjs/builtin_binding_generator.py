@@ -7,26 +7,29 @@ API = json.load(open(os.path.join(DIR, '..', 'builtin_api.gen.json'), 'r'))
 
 VariantTypes = {
 	"boolean": "Variant::BOOL",
-	"number": "Variant::REAL",
+	"number": "Variant::FLOAT",
 	"string": "Variant::STRING",
 	"Vector2": "Variant::VECTOR2",
 	"Vector3": "Variant::VECTOR3",
 	"Basis": "Variant::BASIS",
-	"Quat": "Variant::QUAT",
+	"Quaternion": "Variant::QUATERNION",
 	"Color": "Variant::COLOR",
 	"Rect2": "Variant::RECT2",
-	"RID": "Variant::_RID",
+	"RID": "Variant::RID",
 	"Transform2D": "Variant::TRANSFORM2D",
 	"Plane": "Variant::PLANE",
 	"AABB": "Variant::AABB",
-	"Transform": "Variant::TRANSFORM",
-	"PoolByteArray": "Variant::POOL_BYTE_ARRAY",
-	"PoolIntArray": "Variant::POOL_INT_ARRAY",
-	"PoolRealArray": "Variant::POOL_REAL_ARRAY",
-	"PoolStringArray": "Variant::POOL_STRING_ARRAY",
-	"PoolVector2Array": "Variant::POOL_VECTOR2_ARRAY",
-	"PoolVector3Array": "Variant::POOL_VECTOR3_ARRAY",
-	"PoolColorArray": "Variant::POOL_COLOR_ARRAY",
+	"Transform3D": "Variant::TRANSFORM3D",
+	"PackedByteArray": "Variant::PACKED_BYTE_ARRAY",
+	"PackedInt32Array": "Variant::PACKED_INT32_ARRAY",
+	"PackedInt64Array": "Variant::PACKED_INT64_ARRAY",
+	"PackedFloat32Array": "Variant::PACKED_FLOAT32_ARRAY",
+	"PackedFloat64Array": "Variant::PACKED_FLOAT64_ARRAY",
+	"PackedStringArray": "Variant::PACKED_STRING_ARRAY",
+	"PackedVector2Array": "Variant::PACKED_VECTOR2_ARRAY",
+	"PackedVector3Array": "Variant::PACKED_VECTOR3_ARRAY",
+	"PackedColorArray": "Variant::PACKED_COLOR_ARRAY",
+  	"Variant": "Variant"
 }
 
 JSToGodotTemplates = {
@@ -39,18 +42,20 @@ JSToGodotTemplates = {
 	"RID": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getRID()',
 	"AABB": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getAABB()',
 	"Plane": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPlane()',
-	"Quat": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getQuat()',
+	"Quaternion": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getQuaternion()',
 	"Transform2D": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getTransform2D()',
 	"Vector3": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getVector3()',
 	"Basis": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getBasis()',
-	"Transform": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getTransform()',
-	"PoolByteArray": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPoolByteArray()',
-	"PoolIntArray": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPoolIntArray()',
-	"PoolRealArray": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPoolRealArray()',
-	"PoolStringArray": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPoolStringArray()',
-	"PoolVector2Array": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPoolVector2Array()',
-	"PoolVector3Array": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPoolVector3Array()',
-	"PoolColorArray": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPoolColorArray()',
+	"Transform3D": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getTransform3D()',
+	"PackedByteArray": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPackedByteArray()',
+	"PackedInt32Array": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPackedInt32Array()',
+	"PackedInt64Array": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPackedInt64Array()',
+	"PackedFloat32Array": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPackedFloat32Array()',
+	"PackedFloat64Array": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPackedFloat64Array()',
+	"PackedStringArray": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPackedStringArray()',
+	"PackedVector2Array": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPackedVector2Array()',
+	"PackedVector3Array": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPackedVector3Array()',
+	"PackedColorArray": '*(BINDING_DATA_FROM_JS(ctx, ${arg}))->getPackedColorArray()',
 	"Variant": '(BINDING_DATA_FROM_JS(ctx, ${arg}))->get_value()',
 }
 
@@ -64,18 +69,20 @@ GodotTypeNames = {
 	"RID": "RID",
 	"AABB": "AABB",
 	"Plane": "Plane",
-	"Quat": "Quat",
+	"Quaternion": "Quaternion",
 	"Transform2D": "Transform2D",
 	"Vector3": "Vector3",
 	"Basis": "Basis",
-	"Transform": "Transform",
-	"PoolByteArray": "PoolByteArray",
-	"PoolIntArray": "PoolIntArray",
-	"PoolRealArray": "PoolRealArray",
-	"PoolStringArray": "PoolStringArray",
-	"PoolVector2Array": "PoolVector2Array",
-	"PoolVector3Array": "PoolVector3Array",
-	"PoolColorArray": "PoolColorArray",
+	"Transform3D": "Transform3D",
+	"PackedByteArray": "PackedByteArray",
+	"PackedInt32Array": "PackedInt32Array",
+	"PackedInt64Array": "PackedInt64Array",
+	"PackedFloat32Array": "PackedFloat32Array",
+	"PackedFloat64Array": "PackedFloat64Array",
+	"PackedStringArray": "PackedStringArray",
+	"PackedVector2Array": "PackedVector2Array",
+	"PackedVector3Array": "PackedVector3Array",
+	"PackedColorArray": "PackedColorArray",
 	"Variant": "Variant",
 }
 
@@ -89,18 +96,20 @@ GodotToJSTemplates = {
 	"RID": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
 	"AABB": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
 	"Plane": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
-	"Quat": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"Quaternion": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
 	"Transform2D": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
 	"Vector3": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
 	"Basis": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
-	"Transform": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
-	"PoolByteArray": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
-	"PoolIntArray": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
-	"PoolRealArray": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
-	"PoolStringArray": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
-	"PoolVector2Array": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
-	"PoolVector3Array": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
-	"PoolColorArray": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"Transform3D": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"PackedByteArray": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"PackedInt32Array": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"PackedInt64Array": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"PackedFloat32Array": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"PackedFloat64Array": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"PackedStringArray": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"PackedVector2Array": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"PackedVector3Array": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
+	"PackedColorArray": 'QuickJSBuiltinBinder::new_object_from(ctx, ${arg})',
 	"Variant": 'QuickJSBinder::variant_to_var(ctx, ${arg})',
 }
 
@@ -125,7 +134,7 @@ static JSValue ${func}(JSContext *ctx, JSValueConst new_target, int argc, JSValu
 	// return QuickJSBuiltinBinder::create_builtin_value(ctx, ${type}, &tmp);
 }
 '''
-	TemplateSimplePoolArrays = '''
+	TemplateSimplePackedArrays = '''
 	if (argc == 1) {
 #ifdef DEBUG_METHODS_ENABLED
 		ERR_FAIL_COND_V(!JS_IsArray(ctx, argv[0]), (JS_ThrowTypeError(ctx, "Array expected for argument #0 of ${class}(from)")));
@@ -134,7 +143,7 @@ static JSValue ${func}(JSContext *ctx, JSValueConst new_target, int argc, JSValu
 		tmp.operator=(arr);
 	}
 	'''
-	TemplatePoolArrays = '''
+	TemplatePackedArrays = '''
 	if (argc == 1) {
 		if (JS_IsArray(ctx, argv[0])) {
 			Variant arr = QuickJSBinder::var_to_variant(ctx, argv[0]);
@@ -144,10 +153,10 @@ static JSValue ${func}(JSContext *ctx, JSValueConst new_target, int argc, JSValu
 			uint8_t *buffer = JS_GetArrayBuffer(ctx, &size, argv[0]);
 			if (size) {
 				if (size % sizeof(${element}) != 0) {
-					ERR_PRINTS("Length of the ArrayBuffer does not match for ${class}");
+					ERR_PRINT("Length of the ArrayBuffer does not match for ${class}");
 				}
 				tmp.resize(size / sizeof(${element}));
-				memcpy(tmp.write().ptr(), buffer, size / sizeof(${element}) * sizeof(${element}));
+				memcpy(&tmp.write, buffer, size / sizeof(${element}) * sizeof(${element}));
 			}
 		} else if (JS_IsDataView(argv[0])) {
 			JSValue byte_length = JS_GetPropertyStr(ctx, argv[0], "byteLength");
@@ -164,7 +173,7 @@ static JSValue ${func}(JSContext *ctx, JSValueConst new_target, int argc, JSValu
 			JS_FreeValue(ctx, arraybuffer);
 			if (length) {
 				tmp.resize(length / sizeof(${element}));
-				memcpy(tmp.write().ptr(), buffer + offset, length / sizeof(${element}) * sizeof(${element}));
+				memcpy(&tmp.write, buffer + offset, length / sizeof(${element}) * sizeof(${element}));
 			}
 		} else {
 #ifdef DEBUG_METHODS_ENABLED
@@ -290,7 +299,7 @@ static JSValue ${func}(JSContext *ctx, JSValueConst new_target, int argc, JSValu
 		}
 	}
 ''',
-		"Quat": '''
+		"Quaternion": '''
 	if (argc == 4) {
 		tmp.x = QuickJSBinder::js_to_number(ctx, argv[0]);
 		tmp.y = QuickJSBinder::js_to_number(ctx, argv[1]);
@@ -298,18 +307,18 @@ static JSValue ${func}(JSContext *ctx, JSValueConst new_target, int argc, JSValu
 		tmp.w = QuickJSBinder::js_to_number(ctx, argv[3]);
 	} else if (argc == 2) {
 #ifdef DEBUG_METHODS_ENABLED
-		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[0]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 0 of Quat(axis, angle)")));
+		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[0]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 0 of Quaternion(axis, angle)")));
 #endif
 		ECMAScriptGCHandler *param0 = BINDING_DATA_FROM_JS(ctx, argv[0]);
-		tmp = Quat(*param0->getVector3(), QuickJSBinder::js_to_number(ctx, argv[1]));
+		tmp = Quaternion(*param0->getVector3(), QuickJSBinder::js_to_number(ctx, argv[1]));
 	} else if (argc == 1) {
 		if (ECMAScriptGCHandler *bind = BINDING_DATA_FROM_JS(ctx, argv[0])) {
-			if (bind->type == Variant::QUAT) {
-				tmp = *bind->getQuat();
+			if (bind->type == Variant::QUATERNION) {
+				tmp = *bind->getQuaternion();
 			} else if (bind->type == Variant::BASIS) {
 				tmp = *bind->getBasis();
 			} else if (bind->type == Variant::VECTOR3) {
-				tmp.set_euler(*bind->getVector3());
+				tmp = *bind->getVector3();
 			}
 		}
 	}
@@ -367,21 +376,21 @@ static JSValue ${func}(JSContext *ctx, JSValueConst new_target, int argc, JSValu
 		if (ECMAScriptGCHandler *bind = BINDING_DATA_FROM_JS(ctx, argv[0])) {
 			if (bind->type == Variant::VECTOR3) {
 				tmp.set_euler(*bind->getVector3());
-			} else if (bind->type == Variant::QUAT) {
-				tmp.set_quat(*bind->getQuat());
+			} else if (bind->type == Variant::QUATERNION) {
+				tmp.set_quaternion(*bind->getQuaternion());
 			} else if (bind->type == Variant::BASIS) {
 				tmp.operator=(*bind->getBasis());
 			}
 		}
 	}
 ''',
-		"Transform": '''
+		"Transform3D": '''
 	if (argc == 4) {
 #ifdef DEBUG_METHODS_ENABLED
-		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[0]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 0 of Transform(x_axis, y_axis, z_axis, origin)")));
-		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[1]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 1 of Transform(x_axis, y_axis, z_axis, origin)")));
-		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[2]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 2 of Transform(x_axis, y_axis, z_axis, origin)")));
-		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[3]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 3 of Transform(x_axis, y_axis, z_axis, origin)")));
+		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[0]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 0 of Transform3D(x_axis, y_axis, z_axis, origin)")));
+		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[1]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 1 of Transform3D(x_axis, y_axis, z_axis, origin)")));
+		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[2]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 2 of Transform3D(x_axis, y_axis, z_axis, origin)")));
+		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[3]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 3 of Transform3D(x_axis, y_axis, z_axis, origin)")));
 #endif
 		ECMAScriptGCHandler *param0 = BINDING_DATA_FROM_JS(ctx, argv[0]);
 		ECMAScriptGCHandler *param1 = BINDING_DATA_FROM_JS(ctx, argv[1]);
@@ -394,8 +403,8 @@ static JSValue ${func}(JSContext *ctx, JSValueConst new_target, int argc, JSValu
 		tmp.origin.operator=(*param3->getVector3());
 	} else if (argc == 2) {
 #ifdef DEBUG_METHODS_ENABLED
-		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::BASIS, argv[0]), (JS_ThrowTypeError(ctx, "Basis expected for argument 0 of Transform(basis, origin)")));
-		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[1]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 1 of Transform(basis, origin)")));
+		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::BASIS, argv[0]), (JS_ThrowTypeError(ctx, "Basis expected for argument 0 of Transform3D(basis, origin)")));
+		ERR_FAIL_COND_V(!QuickJSBinder::validate_type(ctx, Variant::VECTOR3, argv[1]), (JS_ThrowTypeError(ctx, "Vector3 expected for argument 1 of Transform3D(basis, origin)")));
 #endif
 		ECMAScriptGCHandler *param0 = BINDING_DATA_FROM_JS(ctx, argv[0]);
 		ECMAScriptGCHandler *param1 = BINDING_DATA_FROM_JS(ctx, argv[1]);
@@ -403,21 +412,21 @@ static JSValue ${func}(JSContext *ctx, JSValueConst new_target, int argc, JSValu
 		tmp.origin.operator=(*param1->getVector3());
 	} else if (argc == 1) {
 		if (ECMAScriptGCHandler *bind = BINDING_DATA_FROM_JS(ctx, argv[0])) {
-			if (bind->type == Variant::TRANSFORM) {
-				tmp.operator=(*bind->getTransform());
-			} else if (Variant::can_convert(bind->type, Variant::TRANSFORM)) {
+			if (bind->type == Variant::TRANSFORM3D) {
+				tmp.operator=(*bind->getTransform3D());
+			} else if (Variant::can_convert(bind->type, Variant::TRANSFORM3D)) {
 				tmp.operator=(bind->get_value());
 			}
 		}
 	}
 ''',
-		"PoolByteArray": apply_pattern(TemplatePoolArrays, {"class": "PoolByteArray", "type": "Variant::POOL_BYTE_ARRAY", "element": "uint8_t"}),
-		"PoolIntArray": apply_pattern(TemplatePoolArrays, {"class": "PoolIntArray", "type": "Variant::POOL_INT_ARRAY", "element": "int"}),
-		"PoolRealArray": apply_pattern(TemplatePoolArrays, {"class": "PoolRealArray", "type": "Variant::POOL_REAL_ARRAY", "element": "real_t"}),
-		"PoolVector2Array": apply_pattern(TemplatePoolArrays, {"class": "PoolVector2Array", "type": "Variant::POOL_VECTOR2_ARRAY", "element": "Vector2"}),
-		"PoolVector3Array": apply_pattern(TemplatePoolArrays, {"class": "PoolVector3Array", "type": "Variant::POOL_VECTOR3_ARRAY", "element": "Vector3"}),
-		"PoolColorArray": apply_pattern(TemplatePoolArrays, {"class": "PoolColorArray", "type": "Variant::POOL_COLOR_ARRAY", "element": "Color"}),
-		"PoolStringArray": apply_pattern(TemplateSimplePoolArrays,{"class": "PoolStringArray", "type": "Variant::POOL_STRING_ARRAY", "element": "String"}),
+		"PackedByteArray": apply_pattern(TemplatePackedArrays, {"class": "PackedByteArray", "type": "Variant::PACKED_BYTE_ARRAY", "element": "uint8_t"}),
+		"PackedInt32Array": apply_pattern(TemplatePackedArrays, {"class": "PackedInt32Array", "type": "Variant::PACKED_INT32_ARRAY", "element": "int"}),
+		"PackedFloat32Array": apply_pattern(TemplatePackedArrays, {"class": "PackedFloat32Array", "type": "Variant::PACKED_FLOAT32_ARRAY", "element": "real_t"}),
+		"PackedVector2Array": apply_pattern(TemplatePackedArrays, {"class": "PackedVector2Array", "type": "Variant::PACKED_VECTOR2_ARRAY", "element": "Vector2"}),
+		"PackedVector3Array": apply_pattern(TemplatePackedArrays, {"class": "PackedVector3Array", "type": "Variant::PACKED_VECTOR3_ARRAY", "element": "Vector3"}),
+		"PackedColorArray": apply_pattern(TemplatePackedArrays, {"class": "PackedColorArray", "type": "Variant::PACKED_COLOR_ARRAY", "element": "Color"}),
+		"PackedStringArray": apply_pattern(TemplateSimplePackedArrays,{"class": "PackedStringArray", "type": "Variant::PACKED_STRING_ARRAY", "element": "String"}),
 	}
 	class_name = cls['name']
 	constructor_name = apply_pattern(TemplateConstructorName, {"class": class_name})
@@ -528,7 +537,10 @@ ${arg_declares}
 			for i in range(len(m['arguments'])):
 				arg = m['arguments'][i]
 				arg_type = arg['type']
-				arg_declares += apply_pattern(TemplateArgDeclare, {
+				templateArgDeclare = TemplateArgDeclare if VariantTypes[arg_type] != "Variant" else '''
+			const ${godot_type} &arg${index} = ${arg};
+'''
+				arg_declares += apply_pattern(templateArgDeclare, {
 					'index': str(i),
 					'type': VariantTypes[arg_type],
 					'type_name': arg_type,
@@ -539,8 +551,23 @@ ${arg_declares}
 				})
 				if i > 0: args += ', '
 				args += 'arg' + str(i)
-			CallTemplate = ('' if m['return'] == 'void' else (apply_pattern(TemplateReturnValue, {"godot_type": GodotTypeNames[m['return']]}))) + 'ptr->${native_method}(${args});'
-			call = apply_pattern(CallTemplate, {'native_method': m['native_method'], 'args': args})
+
+			CallTemplate = ''
+			native_method = m['native_method']
+			if m.get('variant_call'):
+				if native_method.startswith('to_int'): 
+					native_method = native_method.replace('to_int', 'decode_s')
+				if native_method.startswith('to_float32'): 
+					native_method = native_method.replace('to_float32', 'decode_float')
+				if native_method.startswith('to_float64'): 
+					native_method = native_method.replace('to_float64', 'decode_double')
+				CallTemplate = ('' if m['return'] == 'void' else (apply_pattern(TemplateReturnValue, {"godot_type": GodotTypeNames[m['return']]}))) + 'Variant(ptr).call(\"${native_method}\"' + (', ${args});' if args else ');')
+			elif m['name'] == 'grow_side':
+				args = args.replace("arg0", "Side(arg0)")
+				CallTemplate = ('' if m['return'] == 'void' else (apply_pattern(TemplateReturnValue, {"godot_type": GodotTypeNames[m['return']]}))) + 'ptr->${native_method}(${args});'
+			else:
+				CallTemplate = ('' if m['return'] == 'void' else (apply_pattern(TemplateReturnValue, {"godot_type": GodotTypeNames[m['return']]}))) + 'ptr->${native_method}(${args});'
+			call = apply_pattern(CallTemplate, {'native_method': native_method, 'args': args})
 			bindings += apply_pattern(TemplateMethod, {
 				"class": class_name,
 				"type": VariantTypes[class_name],
@@ -565,12 +592,12 @@ ${arg_declares}
 	
 	def genertate_operators(cls):
 		OperatorMap = {
-			'operator+': '+',
-			'operator-': '-',
-			'operator*': '*',
-			'operator/': '/',
-			'operator==': '==',
-			'operator<': '<'
+			'Variant::OP_ADD': '+',
+			'Variant::OP_SUBTRACT': '-',
+			'Variant::OP_MULTIPLY': '*',
+			'Variant::OP_DIVIDE': '/',
+			'Variant::OP_EQUAL': '==',
+			'Variant::OP_LESS': '<'
 		}
 		TargetDeclareTemplate = '''
 #ifdef DEBUG_METHODS_ENABLED
@@ -599,9 +626,10 @@ ${target_declare}
 '''
 		for o in cls['operators']:
 			op = o['native_method']
+			assign = o.get('assign')
 			if op in OperatorMap:
 				argc = len(o['arguments']) + 1
-				js_op = OperatorMap[op]
+				js_op = OperatorMap[op] + ('=' if assign else '')
 				if argc <= 1:
 					if op in ['operator-']:
 						js_op = 'neg'
@@ -617,8 +645,25 @@ ${target_declare}
 						'operator': o['native_method'],
 					})
 					args = '*target'
-				CallTemplate = ('' if o['return'] == 'void' else apply_pattern(TemplateReturnValue, {'godot_type': GodotTypeNames[o['return']] })) + 'ptr->${op}(${args});'
+				
+				EvaluateOperator = ('*ptr = ' if assign else '') + 'Variant::evaluate(${op}, Variant(*ptr), Variant(${args}));'
+
+				if o['return'] == 'void':
+					CallTemplate = ''
+				elif o['return'] == 'this':
+					CallTemplate = apply_pattern(TemplateReturnValue, {'godot_type': GodotTypeNames[cls['name']]}) + EvaluateOperator
+				else:
+					CallTemplate = apply_pattern(TemplateReturnValue, {'godot_type': GodotTypeNames[o['return']] }) + EvaluateOperator
+
 				call = apply_pattern(CallTemplate, {'op': op, 'args': args})
+
+				if o['return'] == 'void':
+					return_str = 'JS_UNDEFINED'
+				elif o['return'] == 'this':
+					return_str = apply_pattern(GodotToJSTemplates[cls['name']], {'arg': '*ptr'})
+				else:
+					return_str = apply_pattern(GodotToJSTemplates[o['return']], {'arg': 'ret'})
+
 				bindings += apply_pattern(OperatorTemplate, {
 					'type': VariantTypes[class_name],
 					'class': class_name,
@@ -626,7 +671,7 @@ ${target_declare}
 					'call': call,
 					'name': o['name'],
 					'target_declare': target_declare,
-					"return": 'JS_UNDEFINED' if o['return'] == 'void' else apply_pattern(GodotToJSTemplates[o['return']], {'arg': 'ret'}),
+					"return": return_str,
 					'argc': str(argc)
 				})
 		bindings += apply_pattern('''
@@ -671,7 +716,7 @@ def generate_class_bind_action(cls, constructor):
 
 def generate_builtin_bindings():
 	Template = '''\
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "quickjs_binder.h"
 #include "quickjs_builtin_binder.h"
 

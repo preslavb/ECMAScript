@@ -33,7 +33,7 @@ bool ECMAScriptInstance::get(const StringName &p_name, Variant &r_ret) const {
 void ECMAScriptInstance::get_property_list(List<PropertyInfo> *p_properties) const {
 	if (!ecma_class) return;
 	for (const StringName *name = ecma_class->properties.next(NULL); name; name = ecma_class->properties.next(name)) {
-		const ECMAProperyInfo &pi = ecma_class->properties.get(*name);
+		const ECMAPropertyInfo &pi = ecma_class->properties.get(*name);
 		p_properties->push_back(pi);
 	}
 }
@@ -41,7 +41,7 @@ void ECMAScriptInstance::get_property_list(List<PropertyInfo> *p_properties) con
 Variant::Type ECMAScriptInstance::get_property_type(const StringName &p_name, bool *r_is_valid) const {
 	*r_is_valid = false;
 	if (ecma_class) {
-		if (const ECMAProperyInfo *pi = ecma_class->properties.getptr(p_name)) {
+		if (const ECMAPropertyInfo *pi = ecma_class->properties.getptr(p_name)) {
 			*r_is_valid = true;
 			return pi->type;
 		}
@@ -49,9 +49,9 @@ Variant::Type ECMAScriptInstance::get_property_type(const StringName &p_name, bo
 	return Variant::NIL;
 }
 
-Variant ECMAScriptInstance::call(const StringName &p_method, const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
+Variant ECMAScriptInstance::call(const StringName &p_method, const Variant **p_args, int p_argcount, Callable::CallError &r_error) {
 	if (binder == NULL || ecma_object.ecma_object == NULL) {
-		r_error.error = Variant::CallError::CALL_ERROR_INSTANCE_IS_NULL;
+		r_error.error = Callable::CallError::CALL_ERROR_INSTANCE_IS_NULL;
 		ERR_FAIL_V(Variant());
 	}
 	return binder->call_method(ecma_object, p_method, p_args, p_argcount, r_error);

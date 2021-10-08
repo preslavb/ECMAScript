@@ -3,7 +3,7 @@
 
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "ecmascript_binder.h"
 #include "scene/resources/text_file.h"
 
@@ -41,43 +41,55 @@ protected:
 	static void _bind_methods();
 
 public:
-	virtual bool can_instance() const;
+	virtual bool can_instantiate() const;
+	virtual bool inherits_script(const Ref<Script> &p_script) const;
 
-	virtual Ref<Script> get_base_script() const { return NULL; } //for script inheritance
-	virtual StringName get_instance_base_type() const;
+	#ifdef TOOLS_ENABLED
+	virtual const Vector<DocData::ClassDoc> &get_documentation() const override {
+		// TODO
+		static Vector<DocData::ClassDoc> docs;
+		return docs;
+	}
+#endif // TOOLS_ENABLED
 
-	virtual ScriptInstance *instance_create(Object *p_this);
-	virtual bool instance_has(const Object *p_this) const;
+	// TODO: Research what needs to be done to implement these rpc methods, and what exactly they are
+	const Vector<Multiplayer::RPCConfig> get_rpc_methods() const override {return Vector<Multiplayer::RPCConfig>();};
 
-	virtual PlaceHolderScriptInstance *placeholder_instance_create(Object *p_this);
-	virtual bool is_placeholder_fallback_enabled() const;
+	virtual Ref<Script> get_base_script() const override { return NULL; } //for script inheritance
+	virtual StringName get_instance_base_type() const override;
 
-	virtual bool has_source_code() const { return true; }
-	virtual String get_source_code() const { return code; }
+	virtual ScriptInstance *instance_create(Object *p_this) override;
+	virtual bool instance_has(const Object *p_this) const override;
 
-	virtual void set_source_code(const String &p_code) { code = p_code; }
-	virtual Error reload(bool p_keep_state = true);
+	virtual PlaceHolderScriptInstance *placeholder_instance_create(Object *p_this) override;
+	virtual bool is_placeholder_fallback_enabled() const override;
 
-	virtual bool has_method(const StringName &p_method) const;
-	virtual MethodInfo get_method_info(const StringName &p_method) const;
+	virtual bool has_source_code() const override { return true; }
+	virtual String get_source_code() const override { return code; }
 
-	virtual bool is_tool() const;
-	virtual bool is_valid() const;
+	virtual void set_source_code(const String &p_code) override { code = p_code; }
+	virtual Error reload(bool p_keep_state = true) override;
 
-	virtual void get_script_method_list(List<MethodInfo> *p_list) const;
-	virtual void get_script_property_list(List<PropertyInfo> *p_list) const;
-	virtual bool get_property_default_value(const StringName &p_property, Variant &r_value) const;
+	virtual bool has_method(const StringName &p_method) const override;
+	virtual MethodInfo get_method_info(const StringName &p_method) const override;
 
-	virtual bool has_script_signal(const StringName &p_signal) const;
-	virtual void get_script_signal_list(List<MethodInfo> *r_signals) const;
+	virtual bool is_tool() const override;
+	virtual bool is_valid() const override;
 
-	virtual void update_exports(); //editor tool
+	virtual void get_script_method_list(List<MethodInfo> *p_list) const override;
+	virtual void get_script_property_list(List<PropertyInfo> *p_list) const override;
+	virtual bool get_property_default_value(const StringName &p_property, Variant &r_value) const override;
 
-	/* TODO */ virtual int get_member_line(const StringName &p_member) const { return -1; }
-	/* TODO */ virtual void get_constants(Map<StringName, Variant> *p_constants) {}
-	/* TODO */ virtual void get_members(Set<StringName> *p_constants) {}
+	virtual bool has_script_signal(const StringName &p_signal) const override;
+	virtual void get_script_signal_list(List<MethodInfo> *r_signals) const override;
 
-	virtual ScriptLanguage *get_language() const;
+	virtual void update_exports() override; //editor tool
+
+	/* TODO */ virtual int get_member_line(const StringName &p_member) const override { return -1; }
+	/* TODO */ virtual void get_constants(Map<StringName, Variant> *p_constants) override {}
+	/* TODO */ virtual void get_members(Set<StringName> *p_constants) override {}
+
+	virtual ScriptLanguage *get_language() const override;
 
 	_FORCE_INLINE_ String get_script_path() const { return script_path; }
 	_FORCE_INLINE_ void set_script_path(const String &p_path) { script_path = p_path; }
@@ -89,19 +101,19 @@ public:
 class ResourceFormatLoaderECMAScript : public ResourceFormatLoader {
 	GDCLASS(ResourceFormatLoaderECMAScript, ResourceFormatLoader)
 public:
-	virtual RES load(const String &p_path, const String &p_original_path = "", Error *r_error = NULL);
-	virtual void get_recognized_extensions(List<String> *p_extensions) const;
-	virtual void get_recognized_extensions_for_type(const String &p_type, List<String> *p_extensions) const;
-	virtual bool handles_type(const String &p_type) const;
-	virtual String get_resource_type(const String &p_path) const;
+	virtual RES load(const String &p_path, const String &p_original_path = "", Error *r_error = NULL, bool p_use_sub_threads = false, float *r_progress = NULL, CacheMode p_cache_mode = CACHE_MODE_REUSE) override;
+	virtual void get_recognized_extensions(List<String> *p_extensions) const override;
+	virtual void get_recognized_extensions_for_type(const String &p_type, List<String> *p_extensions) const override;
+	virtual bool handles_type(const String &p_type) const override;
+	virtual String get_resource_type(const String &p_path) const override;
 };
 
 class ResourceFormatSaverECMAScript : public ResourceFormatSaver {
 	GDCLASS(ResourceFormatSaverECMAScript, ResourceFormatSaver)
 public:
-	virtual Error save(const String &p_path, const RES &p_resource, uint32_t p_flags = 0);
-	virtual void get_recognized_extensions(const RES &p_resource, List<String> *p_extensions) const;
-	virtual bool recognize(const RES &p_resource) const;
+	virtual Error save(const String &p_path, const RES &p_resource, uint32_t p_flags = 0) override;
+	virtual void get_recognized_extensions(const RES &p_resource, List<String> *p_extensions) const override;
+	virtual bool recognize(const RES &p_resource) const override;
 };
 
 class ECMAScriptModule : public TextFile {
@@ -124,11 +136,11 @@ public:
 class ResourceFormatLoaderECMAScriptModule : public ResourceFormatLoader {
 	GDCLASS(ResourceFormatLoaderECMAScriptModule, ResourceFormatLoader)
 public:
-	virtual RES load(const String &p_path, const String &p_original_path = "", Error *r_error = NULL);
-	virtual void get_recognized_extensions(List<String> *p_extensions) const;
-	virtual void get_recognized_extensions_for_type(const String &p_type, List<String> *p_extensions) const;
-	virtual bool handles_type(const String &p_type) const;
-	virtual String get_resource_type(const String &p_path) const;
+	virtual RES load(const String &p_path, const String &p_original_path = "", Error *r_error = NULL, bool p_use_sub_threads = false, float *r_progress = NULL, CacheMode p_cache_mode = CACHE_MODE_REUSE) override;
+	virtual void get_recognized_extensions(List<String> *p_extensions) const override;
+	virtual void get_recognized_extensions_for_type(const String &p_type, List<String> *p_extensions) const override;
+	virtual bool handles_type(const String &p_type) const override;
+	virtual String get_resource_type(const String &p_path) const override;
 
 	static RES load_static(const String &p_path, const String &p_original_path = "", Error *r_error = NULL);
 };
@@ -136,9 +148,9 @@ public:
 class ResourceFormatSaverECMAScriptModule : public ResourceFormatSaver {
 	GDCLASS(ResourceFormatSaverECMAScriptModule, ResourceFormatSaver)
 public:
-	virtual Error save(const String &p_path, const RES &p_resource, uint32_t p_flags = 0);
-	virtual void get_recognized_extensions(const RES &p_resource, List<String> *p_extensions) const;
-	virtual bool recognize(const RES &p_resource) const;
+	virtual Error save(const String &p_path, const RES &p_resource, uint32_t p_flags = 0) override;
+	virtual void get_recognized_extensions(const RES &p_resource, List<String> *p_extensions) const override;
+	virtual bool recognize(const RES &p_resource) const override;
 };
 
 #endif // ECMASCRIPT_H

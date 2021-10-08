@@ -3,21 +3,21 @@
 
 #include "core/io/stream_peer_tcp.h"
 #include "core/io/tcp_server.h"
-#include "core/reference.h"
+#include "core/object/ref_counted.h"
 #include "quickjs/quickjs-debugger.h"
 #define QJS_DEBUGGER_MAX_BUFFER_SIZE 4194304
 
-class QuickJSDebugger : public Reference {
-	GDCLASS(QuickJSDebugger, Reference)
+class QuickJSDebugger : public RefCounted {
+	GDCLASS(QuickJSDebugger, RefCounted)
 
 	Ref<StreamPeerTCP> peer;
-	Ref<TCP_Server> server;
+	Ref<TCPServer> server;
 	JSRuntime *runtime;
 	JSContext *ctx;
 	uint8_t request_buffer[QJS_DEBUGGER_MAX_BUFFER_SIZE];
 
 	struct ConnectionConfig {
-		IP_Address address;
+		IPAddress address;
 		uint16_t port;
 	};
 

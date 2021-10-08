@@ -18,17 +18,22 @@ def dump_text_file_to_cpp(file):
 	source = ""
 	length = len(lines)
 	for i in range(length):
-		line = lines[i].replace('"', '\\"')
-		line = '\t"' + line + '\\n"'
+		line = lines[i]
+		line = line.replace('"', '\\"')
+		line = line.replace('\t', '\\t')
+		line = '\tU"' + line + '\\n"'
 		if i < length -1:
 			line += "\n"
 		source += line
 	return source
 
 if JS_ENGINE == 'quickjs':
-	# generate builtin binding code
+	env.Append(LIBS=["pthread"])
+	env.Append(LIBPATH=["C:\\TDM-GCC-64\\x86_64-w64-mingw32\\lib"])
+
+# generate builtin binding code
 	import generate_builtin_api
-	generate_builtin_api.generate_api_json(os.path.join(GetLaunchDir(), "modules", os.path.basename(os.getcwd())))
+	generate_builtin_api.generate_api_json(os.path.join(os.getcwd()), GetLaunchDir())
 	import quickjs.builtin_binding_generator
 	quickjs.builtin_binding_generator.generate_builtin_bindings()
 	# build quickjs source

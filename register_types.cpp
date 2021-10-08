@@ -59,13 +59,13 @@ public:
 		if (extension != EXT_JSCLASS && extension != EXT_JSMODULE)
 			return;
 
-		if (script_mode == EditorExportPreset::MODE_SCRIPT_ENCRYPTED) {
+		if (script_mode == EditorExportPreset::MODE_SCRIPT_COMPILED) {
 			Vector<uint8_t> file = FileAccess::get_file_as_array(p_path);
-			if (file.empty())
+			if (file.is_empty())
 				return;
 
 			String script_key = preset->get_script_encryption_key().to_lower();
-			String tmp_path = EditorSettings::get_singleton()->get_cache_dir().plus_file("script." + extension + "e");
+			String tmp_path = ProjectSettings::get_singleton()->get_resource_path().plus_file("script." + extension + "e");
 			FileAccess *fa = FileAccess::open(tmp_path, FileAccess::WRITE);
 
 			Vector<uint8_t> key;
@@ -73,7 +73,7 @@ public:
 			for (int i = 0; i < 32; i++) {
 				int v = 0;
 				if (i * 2 < script_key.length()) {
-					CharType ct = script_key[i * 2];
+					CharProxy ct = script_key[i * 2];
 					if (ct >= '0' && ct <= '9')
 						ct = ct - '0';
 					else if (ct >= 'a' && ct <= 'f')
@@ -82,7 +82,7 @@ public:
 				}
 
 				if (i * 2 + 1 < script_key.length()) {
-					CharType ct = script_key[i * 2 + 1];
+					CharProxy ct = script_key[i * 2 + 1];
 					if (ct >= '0' && ct <= '9')
 						ct = ct - '0';
 					else if (ct >= 'a' && ct <= 'f')
@@ -133,13 +133,13 @@ void register_ECMAScript_types() {
 	ClassDB::register_class<ECMAScript>();
 	ClassDB::register_class<ECMAScriptModule>();
 
-	resource_loader_ecmascript.instance();
-	resource_saver_ecmascript.instance();
+	resource_loader_ecmascript.instantiate();
+	resource_saver_ecmascript.instantiate();
 	ResourceLoader::add_resource_format_loader(resource_loader_ecmascript, true);
 	ResourceSaver::add_resource_format_saver(resource_saver_ecmascript, true);
 
-	resource_loader_ecmascript_module.instance();
-	resource_saver_ecmascript_module.instance();
+	resource_loader_ecmascript_module.instantiate();
+	resource_saver_ecmascript_module.instantiate();
 	ResourceLoader::add_resource_format_loader(resource_loader_ecmascript_module, true);
 	ResourceSaver::add_resource_format_saver(resource_saver_ecmascript_module, true);
 
@@ -173,7 +173,7 @@ void editor_init_callback() {
 	EditorNode::get_singleton()->add_editor_plugin(plugin);
 
 	Ref<EditorExportECMAScript> js_export;
-	js_export.instance();
+	js_export.instantiate();
 	EditorExport::get_singleton()->add_export_plugin(js_export);
 }
 #endif

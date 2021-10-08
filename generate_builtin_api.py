@@ -8,19 +8,21 @@ BUILTIN_CLASSES = [
 	'Color',
 	'Vector3',
 	'Basis',
-	'Quat',
+	'Quaternion',
 	'RID',
 	'Transform2D',
 	'Plane',
 	'AABB',
-	"Transform",
-	"PoolByteArray",
-	"PoolIntArray",
-	"PoolRealArray",
-	"PoolStringArray",
-	"PoolVector2Array",
-	"PoolVector3Array",
-	"PoolColorArray",
+	"Transform3D",
+	"PackedByteArray",
+	"PackedInt32Array",
+	"PackedInt64Array",
+	"PackedFloat32Array",
+	"PackedFloat64Array",
+	"PackedStringArray",
+	"PackedVector2Array",
+	"PackedVector3Array",
+	"PackedColorArray",
 ]
 
 MAX_CONSTRUCTOR_ARGC = {
@@ -29,19 +31,21 @@ MAX_CONSTRUCTOR_ARGC = {
 	'Color': 4,
 	'Vector3': 3,
 	'Basis': 0,
-	'Quat': 0,
+	'Quaternion': 0,
 	'RID': 0,
 	'Transform2D': 0,
 	'Plane': 0,
 	'AABB': 0,
-	"Transform": 0,
-	"PoolByteArray": 0,
-	"PoolIntArray": 0,
-	"PoolRealArray": 0,
-	"PoolStringArray": 0,
-	"PoolVector2Array": 0,
-	"PoolVector3Array": 0,
-	"PoolColorArray": 0,
+	"Transform3D": 0,
+	"PackedByteArray": 0,
+	"PackedInt32Array": 0,
+	"PackedInt64Array": 0,
+	"PackedFloat32Array": 0,
+	"PackedFloat64Array": 0,
+	"PackedStringArray": 0,
+	"PackedVector2Array": 0,
+	"PackedVector3Array": 0,
+	"PackedColorArray": 0,
 }
 
 TYPE_MAP = {
@@ -61,7 +65,72 @@ METHOD_OP_EQUALS = {
 		}
 	],
 	"name": "equals",
-	"native_method": "operator==",
+	"native_method": "Variant::OP_EQUAL",
+	"return": "boolean"
+}
+
+METHOD_OP_NOT_EQUALS = {
+	"arguments": [
+		{
+			"default_value": None,
+			"has_default_value": False,
+			"type": "${class_name}"
+		}
+	],
+	"name": "not_equals",
+	"native_method": "Variant::OP_NOT_EQUAL",
+	"return": "boolean"
+}
+
+METHOD_OP_LESS = {
+	"arguments": [
+		{
+			"default_value": None,
+			"has_default_value": False,
+			"type": "${class_name}"
+		}
+	],
+	"name": "less",
+	"native_method": "Variant::OP_LESS",
+	"return": "boolean"
+}
+
+METHOD_OP_LESS_EQAUL = {
+	"arguments": [
+		{
+			"default_value": None,
+			"has_default_value": False,
+			"type": "${class_name}"
+		}
+	],
+	"name": "less_equals",
+	"native_method": "Variant::OP_LESS_EQUAL",
+	"return": "boolean"
+}
+
+METHOD_OP_GREATER = {
+	"arguments": [
+		{
+			"default_value": None,
+			"has_default_value": False,
+			"type": "${class_name}"
+		}
+	],
+	"name": "greater",
+	"native_method": "Variant::OP_GREATER",
+	"return": "boolean"
+}
+
+METHOD_OP_GREATER_EQAUL = {
+	"arguments": [
+		{
+			"default_value": None,
+			"has_default_value": False,
+			"type": "${class_name}"
+		}
+	],
+	"name": "greater_equals",
+	"native_method": "Variant::OP_GREATER_EQUAL",
 	"return": "boolean"
 }
 
@@ -74,7 +143,7 @@ METHOD_OP_ADD = {
 		}
 	],
 	"name": "add",
-	"native_method": "operator+",
+	"native_method": "Variant::OP_ADD",
 	"return": "${class_name}"
 }
 
@@ -87,7 +156,8 @@ METHOD_OP_ADD_ASSIGN = {
 		}
 	],
 	"name": "add_assign",
-	"native_method": "operator+=",
+	"native_method": "Variant::OP_ADD",
+  "assign": True,
 	"return": "this"
 }
 
@@ -100,7 +170,7 @@ METHOD_OP_SUB = {
 		}
 	],
 	"name": "subtract",
-	"native_method": "operator-",
+	"native_method": "Variant::OP_SUBTRACT",
 	"return": "${class_name}"
 }
 
@@ -113,7 +183,8 @@ METHOD_OP_SUB_ASSIGN = {
 		}
 	],
 	"name": "subtract_assign",
-	"native_method": "operator-=",
+	"native_method": "Variant::OP_SUBTRACT",
+  "assign": True,
 	"return": "this"
 }
 
@@ -126,7 +197,7 @@ METHOD_OP_MUL = {
 		}
 	],
 	"name": "multiply",
-	"native_method": "operator*",
+	"native_method": "Variant::OP_MULTIPLY",
 	"return": "${class_name}"
 }
 
@@ -139,7 +210,8 @@ METHOD_OP_MUL_ASSIGN = {
 		}
 	],
 	"name": "multiply_assign",
-	"native_method": "operator*=",
+	"native_method": "Variant::OP_MULTIPLY",
+  "assign": True,
 	"return": "this"
 }
 
@@ -152,7 +224,7 @@ METHOD_OP_DIV = {
 		}
 	],
 	"name": "multiply",
-	"native_method": "operator/",
+	"native_method": "Variant::OP_DIVIDE",
 	"return": "${class_name}"
 }
 
@@ -165,45 +237,33 @@ METHOD_OP_DIV_ASSIGN = {
 		}
 	],
 	"name": "multiply_assign",
-	"native_method": "operator/=",
+	"native_method": "Variant::OP_DIVIDE",
+  "assign": True,
 	"return": "this"
 }
 
 METHOD_OP_NEG = {
 	"arguments": [],
 	"name": "negate",
-	"native_method": "operator-",
+	"native_method": "Variant::OP_NEGATE",
 	"return": "${class_name}"
 }
 
-METHOD_OP_LESS = {
-	"arguments": [
-		{
-			"default_value": None,
-			"has_default_value": False,
-			"type": "${class_name}"
-		}
-	],
-	"name": "less",
-	"native_method": "operator<",
-	"return": "boolean"
+METHOD_OP_POS = {
+	"arguments": [],
+	"name": "negate",
+	"native_method": "Variant::OP_POSITIVE",
+	"return": "${class_name}"
 }
 
-
-METHOD_OP_LESS_EQAUL = {
-	"arguments": [
-		{
-			"default_value": None,
-			"has_default_value": False,
-			"type": "${class_name}"
-		}
-	],
-	"name": "less_equal",
-	"native_method": "operator<=",
-	"return": "boolean"
+METHOD_OP_MOD = {
+	"arguments": [],
+	"name": "negate",
+	"native_method": "Variant::OP_MODULE",
+	"return": "${class_name}"
 }
 
-METHOD_POOL_ARRAY_GET = {
+METHOD_PACKED_ARRAY_GET = {
 	"arguments": [
 		{
 			"default_value": None,
@@ -212,19 +272,20 @@ METHOD_POOL_ARRAY_GET = {
 		}
 	],
 	"name": "get",
+  "array": True,
 	"native_method": "operator[]",
 	"return": "Variant"
 }
 
 IGNORED_PROPS = {
-	"Rect2": ['end', 'grow_margin'],
+	"Rect2": ['end', 'grow_side'],
 	"Color": ['h', 's', 'v', 'r8', 'g8', 'b8', 'a8'],
 	"Transform2D": ['xform', 'xform_inv'],
 	"Basis": ['is_equal_approx'],
 	"Plane": ['intersects_segment', 'intersects_ray', 'intersect_3'],
 	"AABB": ['end'],
-	"Transform": ['xform', 'xform_inv'],
-	"PoolByteArray": ['compress', 'decompress', 'get_string_from_ascii', 'get_string_from_utf8', 'hex_encode'],
+	"Transform3D": ['xform', 'xform_inv'],
+	"PackedByteArray": ['compress', 'decompress', 'decompress_dynamic', 'get_string_from_ascii', 'get_string_from_utf8', 'get_string_from_utf16', 'get_string_from_utf32', 'hex_encode'],
 }
 
 PROPERTY_REMAP = {
@@ -283,7 +344,7 @@ OPERATOR_METHODS = {
 		METHOD_OP_MUL,
 		METHOD_OP_MUL_ASSIGN,
 	],
-	"Quat": [
+	"Quataternion": [
 		METHOD_OP_NEG,
 		METHOD_OP_EQUALS,
 		METHOD_OP_ADD,
@@ -324,7 +385,7 @@ OPERATOR_METHODS = {
 	"AABB": [
 		METHOD_OP_EQUALS,
 	],
-	"Transform": [
+	"Transform3D": [
 		METHOD_OP_EQUALS,
 		METHOD_OP_MUL,
 		METHOD_OP_MUL_ASSIGN,
@@ -366,10 +427,13 @@ def parse_class(cls):
 	for m in (cls.find("methods") if cls.find("methods") is not None else []):
 		m_dict = dict(m.attrib)
 		method_name = m_dict['name']
+		variant_call = class_name.startswith("PackedByte") and method_name.startswith("encode") or method_name.startswith("decode") or method_name.startswith("to_int") or method_name.startswith("to_float") or method_name.startswith("has_encoded_var")
 		if method_name == class_name:
 			continue# ignore constructors
 		if class_name in IGNORED_PROPS and method_name in IGNORED_PROPS[class_name]:
 			continue# ignored methods
+		if method_name.startswith("operator"):
+			continue
 		return_type = m.find("return").attrib["type"] if m.find("return") != None else "void"
 		if return_type in TYPE_MAP:
 			return_type = TYPE_MAP[return_type]
@@ -392,9 +456,10 @@ def parse_class(cls):
 			'native_method': method_name,
 			'return': return_type,
 			'arguments': arguments,
+			'variant_call': variant_call
 		})
-	if class_name.startswith("Pool") and class_name.endswith("Array"):
-		methods.append(METHOD_POOL_ARRAY_GET)
+	if class_name.startswith("Packed") and class_name.endswith("Array"):
+		methods.append(METHOD_PACKED_ARRAY_GET)
 	# add operator methods
 	if class_name in OPERATOR_METHODS:
 		for em in OPERATOR_METHODS[class_name]:
@@ -409,10 +474,10 @@ def parse_class(cls):
 		'class_name': class_name,
 	}))
 
-def generate_api_json(MODULE_DIR):
-	DOCS_DIR = os.path.abspath(os.path.join(MODULE_DIR, "../../doc/classes"))
-	if not os.path.isdir(DOCS_DIR) and len(sys.argv) > 1:
-		DOCS_DIR = sys.argv[-1]
+def generate_api_json(MODULE_DIR, ENGINE_DIR):
+	DOCS_DIR = os.path.abspath(os.path.join(ENGINE_DIR, "doc/classes"))
+	print(MODULE_DIR)
+	print(DOCS_DIR)
 	OUTPUT_FILE = os.path.join(MODULE_DIR, "builtin_api.gen.json")
 
 	classes = []

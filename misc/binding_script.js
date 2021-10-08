@@ -1,6 +1,6 @@
 (function start_script_binding() {
 	
-	const GodotAnonymousConnectionManager = new(class GodotAnonymousConnectionManager extends godot.Reference {
+	const GodotAnonymousConnectionManager = new (class GodotAnonymousConnectionManager extends godot.RefCounted {
 		anonymous_connection_index = 0;
 		
 		get_slot_id(emitter, signal, target) {
@@ -235,7 +235,7 @@
 	});
 
 	// iterator of Pool*Vector
-	const pool_classes = [ godot.PoolByteArray, godot.PoolIntArray, godot.PoolRealArray, godot.PoolStringArray, godot.PoolVector2Array, godot.PoolVector3Array, godot.PoolColorArray ];
+	const pool_classes = [ godot.PackedByteArray, godot.PackedInt32Array, godot.PackedInt64Array, godot.PackedFloat32Array, godot.PackedFloat64Array, godot.PackedStringArray, godot.PackedVector2Array, godot.PackedVector3Array, godot.PackedColorArray ];
 	for (const pool_class of pool_classes) {
 		Object.defineProperty(pool_class.prototype, Symbol.iterator, {value: function iterator() {
 			let next_index = 0;
@@ -259,7 +259,7 @@
 			"Basis": ["is_equal_approx"],
 			"Plane": ["intersects_segment", "intersects_ray", "intersect_3"],
 			"AABB": ["end"],
-			"Transform": ["xform", "xform_inv"],
+			"Transform3D": ["xform", "xform_inv"],
 		},
 		"added": {
 			"Object": [
